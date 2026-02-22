@@ -2,39 +2,75 @@
 @model TodoView.Pages.Todos.DeleteModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Confirm Delete";
 }
 
-<h1>Delete</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            
+            <div class="alert alert-warning d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+                <div>
+                    <strong>Careful!</strong> This action cannot be undone.
+                </div>
+            </div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Todo</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Todo.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Todo.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Todo.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Todo.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Todo.IsDone)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Todo.IsDone)
-        </dd>
-    </dl>
-    
-    <form method="post">
-        <input type="hidden" asp-for="Todo.Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
-    </form>
+            <div class="card border-danger shadow-sm">
+                <div class="card-header bg-danger text-white py-3">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-trash3 me-2"></i>Delete This Task?
+                    </h5>
+                </div>
+                
+                <div class="card-body p-4">
+                    <p class="text-muted mb-4">Are you sure you want to remove the following item?</p>
+                    
+                    <div class="bg-light rounded p-3 mb-4 border">
+                        <div class="mb-3">
+                            <small class="text-uppercase text-muted fw-bold small">Title</small>
+                            <p class="fs-5 mb-0">@Html.DisplayFor(model => model.Todo.Title)</p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <small class="text-uppercase text-muted fw-bold small">Description</small>
+                            <p class="mb-0 text-dark">
+                                @(string.IsNullOrEmpty(Model.Todo.Description) ? "No description provided." : Model.Todo.Description)
+                            </p>
+                        </div>
+
+                        <div>
+                            <small class="text-uppercase text-muted fw-bold small">Status</small>
+                            <div>
+                                @if (Model.Todo.IsDone)
+                                {
+                                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Completed</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary"><i class="bi bi-clock me-1"></i> Pending</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="post" class="d-flex justify-content-between align-items-center">
+                        <input type="hidden" asp-for="Todo.Id" />
+                        
+                        <a asp-page="./Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Keep Task
+                        </a>
+                        
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="bi bi-trash3"></i> Confirm Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <small class="text-muted">Managed by TodoView System</small>
+            </div>
+        </div>
+    </div>
 </div>
