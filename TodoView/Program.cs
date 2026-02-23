@@ -1,9 +1,18 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using TodoView.Models;
 using TodoView.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<TodoDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddIdentity<User, IdentityRole>(options => 
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+    })
+    .AddEntityFrameworkStores<TodoDbContext>()
+    .AddDefaultTokenProviders(); // Required for password resets and confirmations
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -25,6 +34,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapStaticAssets();
 app.MapRazorPages()
